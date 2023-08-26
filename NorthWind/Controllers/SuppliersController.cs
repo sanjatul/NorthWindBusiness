@@ -4,17 +4,17 @@ using NorthWind.Models;
 
 namespace NorthWind.Controllers
 {
-    public class ShippersController : Controller
+    public class SuppliersController : Controller
     {
         private readonly NorthwindContext _context;
-        public ShippersController(NorthwindContext context)
+        public SuppliersController(NorthwindContext context)
         {
             _context = context;
         }
         public async Task<IActionResult> Index()
         {
-            var shippers = await _context.Shippers.ToListAsync();
-            return View(shippers);
+            var suppliers = await _context.Suppliers.ToListAsync();
+            return View(suppliers);
         }
 
 
@@ -23,32 +23,32 @@ namespace NorthWind.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Shipper model)
+        public async Task<IActionResult> Create(Supplier model)
         {
 
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var result = await _context.Shippers.AddAsync(model);
+            var result = await _context.Suppliers.AddAsync(model);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int id)
         {
-            var model = await _context.Shippers.FindAsync(id);
+            var model = await _context.Suppliers.FindAsync(id);
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(Shipper model)
+        public async Task<IActionResult> Edit(Supplier model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            _context.Shippers.Update(model);
+            _context.Suppliers.Update(model);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
@@ -56,14 +56,14 @@ namespace NorthWind.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var model = await _context.Shippers.FindAsync(id);
+            var model = await _context.Suppliers.FindAsync(id);
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Delete(Shipper model)
+        public async Task<IActionResult> Delete(Supplier model)
         {
 
-            _context.Shippers.Remove(model);
+            _context.Suppliers.Remove(model);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
