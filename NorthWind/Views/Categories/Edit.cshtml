@@ -1,0 +1,29 @@
+﻿@model NorthWind.Models.Category
+
+@{
+    ViewData["Title"] = "Edit Category";
+    /*  Layout = "~/Views/Shared/_Layout.cshtml";*/ // Assuming you have a shared layout
+}
+
+<div class="container mt-4">
+    <h2>Edit Category</h2>
+    <form asp-action="Edit" class="needs-validation">
+        <input hidden asp-for="CategoryId" />
+        <div class="mb-3">
+            <label asp-for="CategoryName" class="form-label">Category Name</label>
+            <input asp-for="CategoryName" class="form-control" required>
+            <div class="invalid-feedback">
+                Please provide a category name.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
