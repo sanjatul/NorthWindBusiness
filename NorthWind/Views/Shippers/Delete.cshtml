@@ -1,0 +1,26 @@
+﻿@model NorthWind.Models.Shipper
+
+@{
+    ViewData["Title"] = "Delete Shipper";
+      Layout = "~/Views/Shared/_Layout.cshtml"; // Assuming you have a shared layout
+}
+
+<div class="container mt-4">
+    <h2>Delete Shipper</h2>
+    <form asp-action="Delete" class="needs-validation">
+        <input hidden asp-for="ShipperId" />
+        <div class="mb-3">
+            <label asp-for="ShipperName" class="form-label"></label>
+            <input disabled asp-for="ShipperName" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Phone" class="form-label"></label>
+            <input disabled asp-for="Phone" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
