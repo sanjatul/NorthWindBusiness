@@ -33,41 +33,6 @@ namespace NorthWind.Controllers
         }
 
         #region API CALLS
-        //public IActionResult GetAll()
-        //{
-        //    var query = from od in _context.Orderdetails
-        //                join o in _context.Orders on od.OrderId equals o.OrderId
-        //                join c in _context.Customers on o.CustomerId equals c.CustomerId
-        //                join p in _context.Products on od.ProductId equals p.ProductId
-        //                join cat in _context.Categories on p.CategoryId equals cat.CategoryId
-        //                orderby (od.Quantity * p.Price) descending
-        //                select new
-        //                {
-        //                    od.OrderId,
-        //                    c.CustomerName,
-        //                    p.ProductName,
-        //                    o.OrderDate,
-        //                    od.Quantity,
-        //                    p.Price,
-        //                    Amount = od.Quantity * p.Price
-        //                };
-
-        //    var result = query
-        //        .Select(item => new TopBuyers
-        //        {
-        //            OrderId = (int)item.OrderId,
-        //            CustomerName = item.CustomerName,
-        //            ProductName = item.ProductName,
-        //            OrderDate = item.OrderDate,
-        //            Quantity = item.Quantity,
-        //            Price = item.Price,
-        //            Amount = (decimal)item.Amount
-        //        })
-        //        .ToList(); 
-        //    return Json(new { data = result });
-        //}
-
-
 
         public IActionResult GetAll(int draw, int start, int length, string searchValue)
         {
