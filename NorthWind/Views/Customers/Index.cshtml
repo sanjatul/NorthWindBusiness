@@ -9,57 +9,60 @@
 <p>
     <a class="btn btn-primary" asp-action="Create">Add New</a>
 </p>
-<table class="table">
+<table id="customerData" class="table table-bordered table-striped" style="width:100%">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerName)
+              Customer Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ContactName)
+                Contact Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                Address
             </th>
              <th>
-                @Html.DisplayNameFor(model => model.City)
+                City
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PostalCode)
+               PostalCode
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Country)
+                Country
             </th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                    @Html.DisplayFor(modelItem => item.CustomerName)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.ContactName)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.City)
-            </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PostalCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Country)
-                </td>
-            <td>
-                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> 
-              @*  <a class="btn btn-success" asp-action="Details" asp-route-id="@item.CategoryId">Details</a> |*@
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
 </table>
+@section Scripts{
+    <script>
+        var dataTable;
+
+        $(document).ready(function () {
+            loadDataTable();
+        });
+
+        function loadDataTable() {
+            dataTable = $('#customerData').DataTable({
+                "ajax": { url: '/Customers/getall' },
+                "columns": [
+                    { data: 'customerName' },
+                    { data: 'contactName' },
+                    { data: 'address' },
+                    { data: 'city' },
+                    { data: 'postalCode' },
+                    { data: 'country' },
+                    {
+                        data: 'customerId',
+                        "render": function (data) {
+                            return `<div class="w-75 btn-group" role="group">
+                                                <a href="/customers/edit?customerId=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> Edit</a>
+                                                <a href="/customers/delete?customerId=${data}" class="btn btn-danger mx-2"> <i class="bi bi-trash-fill"></i> Delete</a>
+                                    </div>`
+                        }
+                    }
+                ]
+            });
+        }
+    </script>
+}
