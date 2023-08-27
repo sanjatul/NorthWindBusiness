@@ -13,8 +13,8 @@ namespace NorthWind.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var suppliers = await _context.Suppliers.ToListAsync();
-            return View(suppliers);
+            //var suppliers = await _context.Suppliers.ToListAsync();
+            return View();
         }
 
 
@@ -35,9 +35,9 @@ namespace NorthWind.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int supplierId)
         {
-            var model = await _context.Suppliers.FindAsync(id);
+            var model = await _context.Suppliers.FindAsync(supplierId);
             return View(model);
         }
         [HttpPost]
@@ -54,9 +54,9 @@ namespace NorthWind.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int supplierId)
         {
-            var model = await _context.Suppliers.FindAsync(id);
+            var model = await _context.Suppliers.FindAsync(supplierId);
             return View(model);
         }
         [HttpPost]
@@ -68,5 +68,13 @@ namespace NorthWind.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        #region API CALLS
+        public async Task<IActionResult> GetAll()
+        {
+            var suppliers = await _context.Suppliers.ToListAsync();
+            return Json(new { data = suppliers });
+        }
+        #endregion
     }
 }

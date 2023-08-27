@@ -9,33 +9,44 @@
 <p>
     <a class="btn btn-primary" asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table id="shipperData" class="table table-bordered table-striped" style="width:100%">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ShipperName)
+               ShipperName
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Phone)
+                Phone
             </th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipperName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.ShipperId">Edit</a> 
-              @*  <a class="btn btn-success" asp-action="Details" asp-route-id="@item.CategoryId">Details</a> |*@
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.ShipperId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
 </table>
+@section Scripts{
+    <script>
+        var dataTable;
+
+        $(document).ready(function () {
+            loadDataTable();
+        });
+
+        function loadDataTable() {
+            dataTable = $('#shipperData').DataTable({
+                "ajax": { url: '/Shippers/getall' },
+                "columns": [
+                    { data: 'shipperName' },
+                    { data: 'phone' },
+                    {
+                        data: 'shipperId',
+                        "render": function (data) {
+                            return `<div class="w-75 btn-group" role="group">
+                                     <a href="/Shippers/edit?shipperId=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> Edit</a>
+                                      <a href="/Shippers/delete?shipperId=${data}" class="btn btn-danger mx-2"> <i class="bi bi-trash-fill"></i> Delete</a>
+                                    </div>`
+                        }
+                    }
+                ]
+            });
+        }
+    </script>
+}
