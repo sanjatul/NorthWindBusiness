@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NorthWind.Models;
 using NorthWind.Models.ViewModels;
 using System.Diagnostics;
+using System.Drawing.Printing;
 
 namespace NorthWind.Controllers
 {
@@ -17,7 +19,20 @@ namespace NorthWind.Controllers
         }
 
 
-        public IActionResult Index(int page = 1, int pageSize = 10)
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        #region API CALLS
+        public IActionResult GetAll()
         {
             var query = from od in _context.Orderdetails
                         join o in _context.Orders on od.OrderId equals o.OrderId
@@ -36,11 +51,7 @@ namespace NorthWind.Controllers
                             Amount = od.Quantity * p.Price
                         };
 
-            int totalItems = 100;
-
             var result = query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
                 .Select(item => new TopBuyers
                 {
                     OrderId = (int)item.OrderId,
@@ -51,24 +62,11 @@ namespace NorthWind.Controllers
                     Price = item.Price,
                     Amount = (decimal)item.Amount
                 })
-                .Take(100).ToList(); ;
-
-            var viewModel = new TopBuyersViewModel
-            {
-                TopBuyersList = result,
-                CurrentPage = page,
-                PageSize = pageSize,
-                TotalItems = totalItems
-            };
-
-            return View(viewModel);
+                .ToList(); ;
+            return Json(new { data = result });
         }
+        #endregion
 
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
