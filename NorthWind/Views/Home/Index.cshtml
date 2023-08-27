@@ -28,7 +28,7 @@
             var dataTable = $('#dataTable').DataTable({
                 serverSide: true,
                 ajax: {
-                    url: '/Home/GetAll', // Replace with your API endpoint URL
+                    url: '/Home/GetAll',
                     type: 'GET',
                     data: function (data) {
                         data.start = data.start;
