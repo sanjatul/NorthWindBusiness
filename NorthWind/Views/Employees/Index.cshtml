@@ -7,31 +7,45 @@
 
 <div class="container mt-4">
     <h2>Employee List</h2>
-    <table class="table">
+    <p><a class="btn btn-primary" asp-action="Create">Add New</a></p>
+    <table id="employeeData" class="table table-bordered table-striped" style="width:100%">
         <thead>
             <tr>
                 <th>Last Name</th>
                 <th>First Name</th>
                 <th>Birth Date</th>
-                <th>Photo</th>
                 <th></th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var employee in Model)
-            {
-                <tr>
-                    <td>@employee.LastName</td>
-                    <td>@employee.FirstName</td>
-                    <th>@employee.Photo</th>
-                    <td>@(employee.BirthDate.HasValue ? employee.BirthDate.Value.ToShortDateString() : "")</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@employee.EmployeeId" class="btn btn-sm btn-primary">Edit</a>
-                        <a asp-action="Details" asp-route-id="@employee.EmployeeId" class="btn btn-sm btn-secondary">Details</a>
-                        <a asp-action="Delete" asp-route-id="@employee.EmployeeId" class="btn btn-sm btn-danger">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
     </table>
 </div>
+@section Scripts{
+    <script>
+        var dataTable;
+
+        $(document).ready(function () {
+            loadDataTable();
+        });
+
+        function loadDataTable() {
+            dataTable = $('#employeeData').DataTable({
+                "ajax": { url: '/employees/getall' },
+                "columns": [
+                    { data: 'lastName' },
+                    { data: 'firstName' },
+                    { data: 'birthDate' },
+                    {
+                        data: 'employeeId',
+                        "render": function (data) {
+                            return `<div class="w-75 btn-group" role="group">
+                                            <a href="/employees/edit?employeeId=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> Edit</a>
+                                            <a href="/employees/details?employeeId=${data}" class="btn btn-success mx-2"> <i class="bi bi-pencil-square"></i> Details</a>
+                                            <a href="/employees/delete?employeeId=${data}" class="btn btn-danger mx-2"> <i class="bi bi-trash-fill"></i> Delete</a>
+                                    </div>`
+                        }
+                    }
+                ]
+            });
+        }
+    </script>
+}

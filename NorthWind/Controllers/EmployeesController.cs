@@ -13,8 +13,8 @@ namespace NorthWind.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var Employees = await _context.Employees.ToListAsync();
-            return View(Employees);
+            //var Employees = await _context.Employees.ToListAsync();
+            return View();
         }
 
 
@@ -35,9 +35,9 @@ namespace NorthWind.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int employeeId)
         {
-            var model = await _context.Employees.FindAsync(id);
+            var model = await _context.Employees.FindAsync(employeeId);
             return View(model);
         }
         [HttpPost]
@@ -53,10 +53,14 @@ namespace NorthWind.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Details(int employeeId)
         {
-            var model = await _context.Employees.FindAsync(id);
+            var model = await _context.Employees.FindAsync(employeeId);
+            return View(model);
+        }
+        public async Task<IActionResult> Delete(int employeeId)
+        {
+            var model = await _context.Employees.FindAsync(employeeId);
             return View(model);
         }
         [HttpPost]
@@ -68,6 +72,13 @@ namespace NorthWind.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        #region API CALLS
+        public async Task<IActionResult> GetAll()
+        {
+            var employees = await _context.Employees.ToListAsync();
+            return Json(new { data = employees });
+        }
+        #endregion
     }
 
 }
