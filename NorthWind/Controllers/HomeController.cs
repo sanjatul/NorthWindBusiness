@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NorthWind.Models;
@@ -62,7 +62,7 @@ namespace NorthWind.Controllers
                     Price = item.Price,
                     Amount = (decimal)item.Amount
                 })
-                .ToList(); ;
+                .ToList(); 
             return Json(new { data = result });
         }
         #endregion

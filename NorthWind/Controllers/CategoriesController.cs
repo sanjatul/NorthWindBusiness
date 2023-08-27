@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NorthWind.Models;
+using NorthWind.Models.ViewModels;
 
 namespace NorthWind.Controllers
 {
@@ -14,8 +15,8 @@ namespace NorthWind.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var categories = await _context.Categories.ToListAsync();
-            return View(categories);
+            //var categories = await _context.Categories.ToListAsync();
+            return View();
         }
 
 
@@ -36,9 +37,9 @@ namespace NorthWind.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int categoryId)
         {
-            var model=await _context.Categories.FindAsync(id);
+            var model=await _context.Categories.FindAsync(categoryId);
             return View(model);
         }
         [HttpPost]
@@ -55,9 +56,9 @@ namespace NorthWind.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int categoryId)
         {
-            var model = await _context.Categories.FindAsync(id);
+            var model = await _context.Categories.FindAsync(categoryId);
             return View(model);
         }
         [HttpPost]
@@ -69,6 +70,12 @@ namespace NorthWind.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
+        #region API CALLS
+        public async Task<IActionResult> GetAll()
+        {
+            var categories = await _context.Categories.ToListAsync();
+            return Json(new { data = categories });
+        }
+        #endregion
     }
 }
